@@ -1,0 +1,12 @@
+pandoc: 2.1.3
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  analyze: analyze.html
+  examples: examples.html
+  faq: faq.html
+  installation: installation.html
+urls:
+  reference: http://rnaseq.work//reference
+  article: http://rnaseq.work//articles
+

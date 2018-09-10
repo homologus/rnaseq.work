@@ -11,13 +11,13 @@ This function allows you to identify
 differentially expressed genes.
 }
 \examples{
-rna_diff_exp(method="DEseq")
-rna_diff_exp(method="DEseq2")
-rna_diff_exp(method="edgeR")
-rna_diff_exp(method="limma-voom")
-rna_diff_exp(method="sleuth")
-rna_diff_exp(method="NOIseq")
-rna_diff_exp(method="bayseq")
-rna_diff_exp(method="EBseq")
-rna_diff_exp(method="SAMseq")
+rna_diff_expr(method="DEseq")
+rna_diff_expr(method="DEseq2")
+rna_diff_expr(method="edgeR")
+rna_diff_expr(method="limma-voom")
+rna_diff_expr(method="sleuth")
+rna_diff_expr(method="NOIseq")
+rna_diff_expr(method="bayseq")
+rna_diff_expr(method="EBseq")
+rna_diff_expr(method="SAMseq")
 }

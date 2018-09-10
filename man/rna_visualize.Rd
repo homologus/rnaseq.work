@@ -8,13 +8,12 @@ rna_visualize(data, method = "hist", lib = "base")
 }
 \description{
 Visualize
+https://www.rdocumentation.org/packages/edgeR/versions/3.14.0/topics/plotSmear
 }
 \examples{
 rna_visualize(data,method="MDSplot")
-https://www.rdocumentation.org/packages/edgeR/versions/3.14.0/topics/plotSmear
 rna_visualize(data,method="", lib="base")
 rna_visualize(data,method="", lib="ggplot")
-
 rna_visualize(data,method="hist")
 rna_visualize(data,method="boxplot")
 rna_visualize(data,method="density")

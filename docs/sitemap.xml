@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://rnaseq.work//index.html</loc>
+  </url>
+  <url>
+    <loc>http://rnaseq.work//reference/rna_diff_expr.html</loc>
+  </url>
+  <url>
+    <loc>http://rnaseq.work//reference/rna_visualize.html</loc>
+  </url>
+  <url>
+    <loc>http://rnaseq.work//articles/analyze.html</loc>
+  </url>
+  <url>
+    <loc>http://rnaseq.work//articles/examples.html</loc>
+  </url>
+  <url>
+    <loc>http://rnaseq.work//articles/faq.html</loc>
+  </url>
+  <url>
+    <loc>http://rnaseq.work//articles/installation.html</loc>
+  </url>
+</urlset>
