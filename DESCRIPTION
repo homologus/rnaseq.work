@@ -1,0 +1,10 @@
+Package: rnaseq.work
+Title: RNAseq Data Analysis
+Version: 0.0.0.9000
+Authors@R: person("Manoj", "Samanta", email = "samanta@homolog.us", role = c("aut", "cre"))
+Description: This packages helps in the analysis of RNAseq data.
+Depends: R (>= 3.5.1)
+License: GPL3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
