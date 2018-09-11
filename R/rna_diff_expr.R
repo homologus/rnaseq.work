@@ -22,7 +22,6 @@
 
 library(readr)
 library(dplyr)
-library(DESeq2)
 library(edgeR)
 library(limma)
 #library(Glimma)
@@ -34,18 +33,18 @@ library(limma)
 #' differentially expressed genes.
 #' @export
 #' @examples
-#' rna_diff_expr(count_file, design_file, method="DEseq")
-#' rna_diff_expr(count_file, design_file, method="DEseq2")
-#' rna_diff_expr(count_file, design_file, method="edgeR")
-#' rna_diff_expr(count_file, design_file, method="limma-voom")
-#' rna_diff_expr(count_file, design_file, method="sleuth")
-#' rna_diff_expr(count_file, design_file, method="bayseq")
-#' rna_diff_expr(count_file, design_file, method="NOIseq")
-#' rna_diff_expr(count_file, design_file, method="EBseq")
-#' rna_diff_expr(count_file, design_file, method="SAMseq")
+#' rna_diff_expr(count_table, design_table, method="DEseq")
+#' rna_diff_expr(count_table, design_table, method="DEseq2")
+#' rna_diff_expr(count_table, design_table, method="edgeR")
+#' rna_diff_expr(count_table, design_table, method="limma-voom")
+#' rna_diff_expr(count_table, design_table, method="sleuth")
+#' rna_diff_expr(count_table, design_table, method="bayseq")
+#' rna_diff_expr(count_table, design_table, method="NOIseq")
+#' rna_diff_expr(count_table, design_table, method="EBseq")
+#' rna_diff_expr(count_table, design_table, method="SAMseq")
 #
 
-rna_diff_expr <- function(count_file, design_file, method="DEseq2") {
+rna_diff_expr <- function(count_table, design_table, method="DEseq2") {
 
   if(method=="DEseq") {
     print("using DEseq")
@@ -63,25 +62,26 @@ rna_diff_expr <- function(count_file, design_file, method="DEseq2") {
   }
 
   if(method=="DEseq2") {
+    library(DESeq2)
     print("using DEseq2")
-    dds <- DESeqDataSetFromMatrix(count_file, design_file, ~condition)
+    dds <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
     dds <- DESeq(dds)
     res <- results(dds)
   }
 
   if(method=="edgeR") {
     print("using edgeR")
-    # y <- DGEList(count_file)
+    # y <- DGEList(count_table)
     # y <- calcNormFactors(y)
-    # y <- estimateDisp(y, design_file)
-    # fit <- glmFit(y, design_file)
+    # y <- estimateDisp(y, design_table)
+    # fit <- glmFit(y, design_table)
     # res <- glmLRT(fit, coef = 2)
 
   }
 
   if(method=="limma-voom") {
     print("using limma-voom")
-    # v <- voom(count_file, design_file, plot = TRUE)
+    # v <- voom(count_table, design_table, plot = TRUE)
     # fit <- lmFit(v)
     # cont.matrix <- makeContrasts(B.PregVsLac=basal.pregnant - basal.lactate,levels=design)
     # fit.cont <- contrasts.fit(fit, cont.matrix)
@@ -112,5 +112,5 @@ rna_diff_expr <- function(count_file, design_file, method="DEseq2") {
     print("using SAMseq")
   }
 
-  res
+  as.data.frame(res)
 }
