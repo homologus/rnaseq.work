@@ -2,19 +2,14 @@ title: rnaseq.work
 url: http://rnaseq.work/
 template:
   params:
-    bootswatch: flatly
-    ganalytics: UA-12345678-0
+    bootswatch: 
+    ganalytics: 
 reference:
   - title: Exported Functions
     desc: Functions exported by rnaseq.work
     contents:
       - '`tsp`'
       - '`extract`'
-  - title: Internals
-    desc: Internal functions and helpers
-    contents:
-      - '`GUI`'
-      - '`process`'
 navbar:
   type: inverse
   left:
@@ -22,22 +17,19 @@ navbar:
       href: index.html
     - text: "How To"
       menu: 
-      -  text: Installation
+      -  text: Install
          href: articles/installation.html
-      -  text: Accessing and Analyzing Processed Data from R
+      -  text: Obtain RNAseq Data for Analysis
          href: articles/analyze.html
     - text: "Examples of Use"
       href: articles/examples.html
   right:
-    - text: "faq"
+    - text: "FAQ"
       icon: fa-question-circle-o
       href: articles/faq.html
-    - icon: fa-newspaper-o
-      text: "news"
-      href: news/index.html
     - icon: fa-file-code-o 
-      text: "functions"
+      text: "Functions"
       href: reference/index.html
     - icon: fa-github fa-lg
-      text: "github"
+      text: "Github"
       href: https://github.com/homologus/rnaseq.work

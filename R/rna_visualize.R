@@ -153,11 +153,11 @@ rna_visualize <- function(data, method="hist", lib="base"){
   if(method=="volcano") {
     if(lib=="ggplot") {
       print("using volcano/ggplot")
-      # print(ggplot(data)+aes(x=log2FoldChange,y=pvalue)+geom_point())
+      print(ggplot(data)+aes(x=log2FoldChange,y=-log10(pvalue))+geom_point())
     }
     if(lib=="base") {
       print("using volcano/base")
-      # plot(data$log2FoldChange, -log10(data$pvalue), main="Volcano Plot")
+      plot(data$log2FoldChange, -log10(data$pvalue), main="Volcano Plot")
     }
   }
 

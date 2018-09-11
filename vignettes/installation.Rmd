@@ -1,0 +1,5 @@
+
+~~~~~~~~~
+library(devtools)
+devtools::install_github("homologus/rnaseq.work")
+~~~~~~~~~

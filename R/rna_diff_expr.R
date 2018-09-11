@@ -64,9 +64,9 @@ rna_diff_expr <- function(count_file, design_file, method="DEseq2") {
 
   if(method=="DEseq2") {
     print("using DEseq2")
-    # dds <- DESeqDataSetFromMatrix(count_file, DataFrame(design_file), ~ design_file)
-    # dds <- DESeq(dds)
-    # res <- results(dds)
+    dds <- DESeqDataSetFromMatrix(count_file, design_file, ~condition)
+    dds <- DESeq(dds)
+    res <- results(dds)
   }
 
   if(method=="edgeR") {
@@ -112,5 +112,5 @@ rna_diff_expr <- function(count_file, design_file, method="DEseq2") {
     print("using SAMseq")
   }
 
-  # res
+  res
 }

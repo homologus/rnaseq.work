@@ -1,0 +1,35 @@
+## 1. pasilla
+
+~~~~~~~
+source("https://bioconductor.org/biocLite.R")
+biocLite("pasilla")
+datafile = system.file("extdata/pasilla_gene_counts.tsv", package = "pasilla")
+count_table = read.table(datafile, header = TRUE, row.names = 1)
+~~~~~~~
+
+
+## 2. GSE37704
+
+https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE37704
+
+https://figshare.com/articles/GSE37704_sample_data/1601975
+
+## 3. GSE60450
+
+http://combine-australia.github.io/RNAseq-R/06-rnaseq-day1.html
+
+## 4. parathyroidSE
+
+~~~~~~~
+library( "parathyroidSE" )
+data_dir <- system.file("extdata", package = "parathyroidSE", mustWork = TRUE)
+list.files( data_dir )
+
+http://www.sthda.com/english/wiki/rna-seq-differential-expression-work-flow-using-deseq2
+~~~~~~~
+
+## 5. bayseq
+
+mobData - arabidopsis
+
+

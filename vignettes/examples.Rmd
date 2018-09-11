@@ -1,0 +1,19 @@
+
+### 1. DEseq Analysis of Pasilla Dataset
+
+~~~~~~~~
+library("pasilla")
+datafile <- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
+count_table = read_tsv(datafile)
+annotfile <- system.file("extdata", "pasilla_sample_annotation.csv", package="pasilla", mustWork=TRUE)
+design_table <- read.csv(annotfile, row.names=1)
+design_table <- design_table[,c("condition","type")]
+results=rna_diff_expr(count_table, design_table, method="DEseq2")
+~~~~~~~~
+
+
+### 2. edgeR Analysis of Pasilla Dataset
+
+~~~~~~~~
+~~~~~~~~
+

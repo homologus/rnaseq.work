@@ -33,6 +33,4 @@ rna_visualize(data, method="BCV", lib="base")
 rna_visualize(data, method="BCV", lib="ggplot")
 rna_visualize(data, method="volcano", lib="base")
 rna_visualize(data, method="volcano", lib="ggplot")
-rna_visualize(data, method="venn", lib="base")
-rna_visualize(data, method="venn", lib="ggplot")
 }
