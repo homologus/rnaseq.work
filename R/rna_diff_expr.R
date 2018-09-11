@@ -20,7 +20,6 @@
 ###############################################################################
 
 
-
 library(readr)
 library(dplyr)
 library(DESeq2)
@@ -35,52 +34,83 @@ library(limma)
 #' differentially expressed genes.
 #' @export
 #' @examples
-#' rna_diff_expr(method="DEseq")
-#' rna_diff_expr(method="DEseq2")
-#' rna_diff_expr(method="edgeR")
-#' rna_diff_expr(method="limma-voom")
-#' rna_diff_expr(method="sleuth")
-#' rna_diff_expr(method="NOIseq")
-#' rna_diff_expr(method="bayseq")
-#' rna_diff_expr(method="EBseq")
-#' rna_diff_expr(method="SAMseq")
+#' rna_diff_expr(count_file, design_file, method="DEseq")
+#' rna_diff_expr(count_file, design_file, method="DEseq2")
+#' rna_diff_expr(count_file, design_file, method="edgeR")
+#' rna_diff_expr(count_file, design_file, method="limma-voom")
+#' rna_diff_expr(count_file, design_file, method="sleuth")
+#' rna_diff_expr(count_file, design_file, method="bayseq")
+#' rna_diff_expr(count_file, design_file, method="NOIseq")
+#' rna_diff_expr(count_file, design_file, method="EBseq")
+#' rna_diff_expr(count_file, design_file, method="SAMseq")
 #
 
-rna_diff_expr <- function(count_file, design_file, method="DEseq") {
+rna_diff_expr <- function(count_file, design_file, method="DEseq2") {
 
-    if(method=="DESeq") {
+  if(method=="DEseq") {
+    print("using DEseq")
+    # cds <- newCountDataSet(cnts, grp.idx)
+    # cds <- estimateSizeFactors(cds)
+    # cds <- estimateDispersions(cds)
+    # deseq.res <- nbinomTest(cds, "knockdown", "control")
+    # deseq.fc=deseq.res$log2FoldChange
+    # names(deseq.fc)=deseq.res$id
+    # sum(is.infinite(deseq.fc))
+    # deseq.fc[deseq.fc>10]=10
+    # deseq.fc[deseq.fc< -10]=-10
+    # exp.fc=deseq.fc
+    # out.suffix="deseq"
+  }
 
-    }
+  if(method=="DEseq2") {
+    print("using DEseq2")
+    # dds <- DESeqDataSetFromMatrix(count_file, DataFrame(design_file), ~ design_file)
+    # dds <- DESeq(dds)
+    # res <- results(dds)
+  }
 
-    if(method=="DEseq2") {
-    }
+  if(method=="edgeR") {
+    print("using edgeR")
+    # y <- DGEList(count_file)
+    # y <- calcNormFactors(y)
+    # y <- estimateDisp(y, design_file)
+    # fit <- glmFit(y, design_file)
+    # res <- glmLRT(fit, coef = 2)
 
-    if(method=="edgeR") {
-    }
+  }
 
-    if(method=="limma-voom") {
-    }
+  if(method=="limma-voom") {
+    print("using limma-voom")
+    # v <- voom(count_file, design_file, plot = TRUE)
+    # fit <- lmFit(v)
+    # cont.matrix <- makeContrasts(B.PregVsLac=basal.pregnant - basal.lactate,levels=design)
+    # fit.cont <- contrasts.fit(fit, cont.matrix)
+    # fit.cont <- eBayes(fit.cont)
+    # summa.fit <- decideTests(fit.cont)
+  }
 
-    if(method=="sleuth") {
+  if(method=="sleuth") {
+    print("using sleuth")
+  }
 
-    }
+  if(method=="bayseq") {
+    print("using bayseq")
+    # CD <- new("countData", data = simData, replicates = replicates, groups = groups)
+    # CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
+    # CD <- getLikelihoods(CD, cl = cl, bootStraps = 3, verbose = FALSE)
+  }
 
-    if(method=="bayseq") {
+  if(method=="EBseq") {
+    print("using EBseq")
+  }
 
-    }
+  if(method=="NOIseq") {
+    print("using NOIseq")
+  }
 
-    if(method=="EBseq") {
+  if(method=="SAMseq") {
+    print("using SAMseq")
+  }
 
-    }
-
-    if(method=="NOIseq") {
-
-    }
-
-    if(method=="SAMseq") {
-
-    }
-
+  # res
 }
-
-
