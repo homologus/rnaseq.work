@@ -20,55 +20,55 @@
 ##############################################################################
 
 
-library(ggplot2)
-library(dplyr)
-
 #' RNAseq Visualize
 #'
 #' Visualize
 #' https://www.rdocumentation.org/packages/edgeR/versions/3.14.0/topics/plotSmear
 #' @export
 #' @examples
-#' rna_visualize(data, method="hist", lib="base")
-#' rna_visualize(data, method="hist", lib="ggplot")
-#' rna_visualize(data, method="boxplot", lib="base")
-#' rna_visualize(data, method="boxplot", lib="ggplot")
-#' rna_visualize(data, method="density", lib="base")
-#' rna_visualize(data, method="density", lib="ggplot")
-#' rna_visualize(data, method="cluster-gene", lib="base")
-#' rna_visualize(data, method="cluster-gene", lib="ggplot")
-#' rna_visualize(data, method="cluster-expt", lib="base")
-#' rna_visualize(data, method="cluster-expt", lib="ggplot")
-#' rna_visualize(data, method="MA", lib="base")
-#' rna_visualize(data, method="MA", lib="ggplot")
-#' rna_visualize(data, method="smear", lib="base")
-#' rna_visualize(data, method="smear", lib="ggplot")
-#' rna_visualize(data, method="MDS", lib="base")
-#' rna_visualize(data, method="MDS", lib="ggplot")
-#' rna_visualize(data, method="PCA", lib="base")
-#' rna_visualize(data, method="PCA", lib="ggplot")
-#' rna_visualize(data, method="BCV", lib="base")
-#' rna_visualize(data, method="BCV", lib="ggplot")
-#' rna_visualize(data, method="volcano", lib="base")
-#' rna_visualize(data, method="volcano", lib="ggplot")
+#' rna_visualize(rna_data, method="hist", lib="base")
+#' rna_visualize(rna_data, method="hist", lib="ggplot")
+#' rna_visualize(rna_data, method="boxplot", lib="base")
+#' rna_visualize(rna_data, method="boxplot", lib="ggplot")
+#' rna_visualize(rna_data, method="density", lib="base")
+#' rna_visualize(rna_data, method="density", lib="ggplot")
+#' rna_visualize(rna_data, method="cluster-gene", lib="base")
+#' rna_visualize(rna_data, method="cluster-gene", lib="ggplot")
+#' rna_visualize(rna_data, method="cluster-expt", lib="base")
+#' rna_visualize(rna_data, method="cluster-expt", lib="ggplot")
+#' rna_visualize(rna_data, method="MA", lib="base")
+#' rna_visualize(rna_data, method="MA", lib="ggplot")
+#' rna_visualize(rna_data, method="smear", lib="base")
+#' rna_visualize(rna_data, method="smear", lib="ggplot")
+#' rna_visualize(rna_data, method="MDS", lib="base")
+#' rna_visualize(rna_data, method="MDS", lib="ggplot")
+#' rna_visualize(rna_data, method="PCA", lib="base")
+#' rna_visualize(rna_data, method="PCA", lib="ggplot")
+#' rna_visualize(rna_data, method="BCV", lib="base")
+#' rna_visualize(rna_data, method="BCV", lib="ggplot")
+#' rna_visualize(rna_data, method="dispersion", lib="base")
+#' rna_visualize(rna_data, method="dispersion", lib="ggplot")
+#' rna_visualize(rna_data, method="volcano", lib="base")
+#' rna_visualize(rna_data, method="volcano", lib="ggplot")
 
 
-rna_visualize <- function(data, method="hist", lib="base"){
+rna_visualize <- function(rna_data, method="hist", lib="base"){
 
   if(method=="hist") {
     if(lib=="ggplot") {
       print("using hist/ggplot")
-    }
-    if(lib=="base") {
+      # Fix 'untreated1'
+      print(ggplot(rna_data)+aes(x=untreated1)+geom_histogram())
+    } else {
       print("using hist/base")
+      hist(rna_data$untreated1)
     }
   }
 
   if(method=="boxplot") {
     if(lib=="ggplot") {
       print("using boxplot/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using boxplot/base")
     }
   }
@@ -76,8 +76,7 @@ rna_visualize <- function(data, method="hist", lib="base"){
   if(method=="density") {
     if(lib=="ggplot") {
       print("using density/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using density/base")
     }
   }
@@ -85,8 +84,7 @@ rna_visualize <- function(data, method="hist", lib="base"){
   if(method=="cluster-expt") {
     if(lib=="ggplot") {
       print("using cluster-expt/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using cluster-expt/base")
     }
   }
@@ -94,8 +92,7 @@ rna_visualize <- function(data, method="hist", lib="base"){
   if(method=="cluster-gene") {
     if(lib=="ggplot") {
       print("using cluster-gene/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using cluster-gene/base")
     }
   }
@@ -103,10 +100,9 @@ rna_visualize <- function(data, method="hist", lib="base"){
   if(method=="smear") {
     if(lib=="ggplot") {
       print("using smear/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using smear/base")
-      # plotSmear()
+      plotSmear(rna_data)
     }
   }
 
@@ -114,8 +110,13 @@ rna_visualize <- function(data, method="hist", lib="base"){
   if(method=="MA") {
     if(lib=="ggplot") {
       print("using MA/ggplot")
-    }
-    if(lib=="base") {
+      x=rna_data[,1]
+      y=rna_data[,2]
+      M = x - y
+      A = (x + y)/2
+      df = rna_data.frame(A, M)
+      ggplot(df, aes(x = A, y = M)) + geom_point()
+    } else {
       print("using MA/base")
     }
   }
@@ -123,44 +124,50 @@ rna_visualize <- function(data, method="hist", lib="base"){
   if(method=="MDS") {
     if(lib=="ggplot") {
       print("using MDS/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using MDS/base")
-      # plotMDS()
+      library("edgeR")
+      plotMDS(rna_data)
     }
   }
 
   if(method=="PCA") {
     if(lib=="ggplot") {
       print("using PCA/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using PCA/base")
-      # plotPCA()
+      library("DESeq2")
+      plotPCA(rna_data)
     }
   }
 
   if(method=="BCV") {
     if(lib=="ggplot") {
       print("using BCV/ggplot")
-    }
-    if(lib=="base") {
+    } else {
       print("using BCV/base")
-      # plotBCV()
+      plotBCV(rna_data)
+    }
+  }
+
+  if(method=="dispersion") {
+    if(lib=="ggplot") {
+      print("using dispersion/ggplot")
+    } else {
+      print("using dispersion/base")
+      plotDispEsts(rna_data)
     }
   }
 
   if(method=="volcano") {
     if(lib=="ggplot") {
       print("using volcano/ggplot")
-      print(ggplot(data)+aes(x=log2FoldChange,y=-log10(pvalue))+geom_point())
-    }
-    if(lib=="base") {
+      print(ggplot(rna_data)+aes(x=log2FoldChange,y=-log10(pvalue))+geom_point())
+    } else {
       print("using volcano/base")
-      plot(data$log2FoldChange, -log10(data$pvalue), main="Volcano Plot")
+      plot(rna_data$log2FoldChange, -log10(data$pvalue), main="Volcano Plot")
     }
   }
 
 }
-
 

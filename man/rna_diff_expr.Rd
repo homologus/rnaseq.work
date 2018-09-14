@@ -4,20 +4,20 @@
 \alias{rna_diff_expr}
 \title{RNAseq Differential Expressison}
 \usage{
-rna_diff_expr(count_file, design_file, method = "DEseq2")
+rna_diff_expr(count_table, design_table, method = "DESeq2")
 }
 \description{
 This function allows you to identify
 differentially expressed genes.
 }
 \examples{
-rna_diff_expr(count_file, design_file, method="DEseq")
-rna_diff_expr(count_file, design_file, method="DEseq2")
-rna_diff_expr(count_file, design_file, method="edgeR")
-rna_diff_expr(count_file, design_file, method="limma-voom")
-rna_diff_expr(count_file, design_file, method="sleuth")
-rna_diff_expr(count_file, design_file, method="bayseq")
-rna_diff_expr(count_file, design_file, method="NOIseq")
-rna_diff_expr(count_file, design_file, method="EBseq")
-rna_diff_expr(count_file, design_file, method="SAMseq")
+rna_diff_expr(count_table, design_table, method="DESeq")
+rna_diff_expr(count_table, design_table, method="DESeq2")
+rna_diff_expr(count_table, design_table, method="edgeR")
+rna_diff_expr(count_table, design_table, method="limma-voom")
+rna_diff_expr(count_table, design_table, method="sleuth")
+rna_diff_expr(count_table, design_table, method="bayseq")
+rna_diff_expr(count_table, design_table, method="NOIseq")
+rna_diff_expr(count_table, design_table, method="EBseq")
+rna_diff_expr(count_table, design_table, method="SAMseq")
 }

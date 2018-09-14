@@ -109,10 +109,10 @@
 <a href="#deseq-analysis-of-pasilla-dataset" class="anchor"></a>1. DEseq Analysis of Pasilla Dataset</h3>
 <pre><code>library("pasilla")
 datafile &lt;- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
-count_table = read_tsv(datafile)
-annotfile &lt;- system.file("extdata", "pasilla_sample_annotation.csv", package="pasilla", mustWork=TRUE)
-design_table &lt;- read.csv(annotfile, row.names=1)
-design_table &lt;- design_table[,c("condition","type")]
+count_table &lt;- read.csv(datafile,sep="\t",row.names="gene_id")
+expt &lt;- colnames(count_table)
+condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
+design_table=data.frame(expt,condition)
 results=rna_diff_expr(count_table, design_table, method="DEseq2")</code></pre>
 </div>
 <div id="edger-analysis-of-pasilla-dataset" class="section level3">

@@ -8,12 +8,19 @@ count_table <- read.csv(datafile,sep="\t",row.names="gene_id")
 expt <- colnames(count_table)
 condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
 design_table=data.frame(expt,condition)
-results=rna_diff_expr(count_table, design_table, method="DEseq2")
+results=rna_diff_expr(count_table, design_table, method="DESeq2")
 ~~~~~~~~
 
 
 ### 2. edgeR Analysis of Pasilla Dataset
 
 ~~~~~~~~
+library("pasilla")
+datafile <- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
+count_table <- read.csv(datafile,sep="\t",row.names="gene_id")
+expt <- colnames(count_table)
+condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
+design_table=data.frame(expt,condition)
+results=rna_diff_expr(count_table, design_table, method="edgeR")
 ~~~~~~~~
 

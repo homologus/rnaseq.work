@@ -20,12 +20,6 @@
 ###############################################################################
 
 
-library(readr)
-library(dplyr)
-library(edgeR)
-library(limma)
-#library(Glimma)
-
 
 #' RNAseq Differential Expressison
 #'
@@ -33,8 +27,8 @@ library(limma)
 #' differentially expressed genes.
 #' @export
 #' @examples
-#' rna_diff_expr(count_table, design_table, method="DEseq")
-#' rna_diff_expr(count_table, design_table, method="DEseq2")
+#' rna_diff_expr(count_table, design_table, method="DESeq")
+#' rna_diff_expr(count_table, design_table, method="DESeq2")
 #' rna_diff_expr(count_table, design_table, method="edgeR")
 #' rna_diff_expr(count_table, design_table, method="limma-voom")
 #' rna_diff_expr(count_table, design_table, method="sleuth")
@@ -44,9 +38,9 @@ library(limma)
 #' rna_diff_expr(count_table, design_table, method="SAMseq")
 #
 
-rna_diff_expr <- function(count_table, design_table, method="DEseq2") {
+rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
-  if(method=="DEseq") {
+  if(method=="DESeq") {
     print("using DEseq")
     # cds <- newCountDataSet(cnts, grp.idx)
     # cds <- estimateSizeFactors(cds)
@@ -59,11 +53,12 @@ rna_diff_expr <- function(count_table, design_table, method="DEseq2") {
     # deseq.fc[deseq.fc< -10]=-10
     # exp.fc=deseq.fc
     # out.suffix="deseq"
+    res=0
   }
 
-  if(method=="DEseq2") {
-    library(DESeq2)
+  if(method=="DESeq2") {
     print("using DEseq2")
+    library(DESeq2)
     dds <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
     dds <- DESeq(dds)
     res <- results(dds)
@@ -71,22 +66,29 @@ rna_diff_expr <- function(count_table, design_table, method="DEseq2") {
 
   if(method=="edgeR") {
     print("using edgeR")
-    # y <- DGEList(count_table)
-    # y <- calcNormFactors(y)
-    # y <- estimateDisp(y, design_table)
-    # fit <- glmFit(y, design_table)
-    # res <- glmLRT(fit, coef = 2)
-
+    library(DESeq2)
+    library(edgeR)
+    y <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
+    group = colData(y)$condition
+    y = counts(y)
+    dge = DGEList(counts = y, group = group)
+    dge = estimateCommonDisp(dge)
+    dge = estimateTagwiseDisp(dge)
+    et = exactTest(dge)
+    ## Extract results from edgeR analysis
+    res = topTags(et)
   }
 
   if(method=="limma-voom") {
     print("using limma-voom")
+    library(limma)
     # v <- voom(count_table, design_table, plot = TRUE)
     # fit <- lmFit(v)
     # cont.matrix <- makeContrasts(B.PregVsLac=basal.pregnant - basal.lactate,levels=design)
     # fit.cont <- contrasts.fit(fit, cont.matrix)
     # fit.cont <- eBayes(fit.cont)
     # summa.fit <- decideTests(fit.cont)
+    res=0
   }
 
   if(method=="sleuth") {
@@ -98,18 +100,22 @@ rna_diff_expr <- function(count_table, design_table, method="DEseq2") {
     # CD <- new("countData", data = simData, replicates = replicates, groups = groups)
     # CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
     # CD <- getLikelihoods(CD, cl = cl, bootStraps = 3, verbose = FALSE)
+    res=0
   }
 
   if(method=="EBseq") {
     print("using EBseq")
+    res=0
   }
 
   if(method=="NOIseq") {
     print("using NOIseq")
+    res=0
   }
 
   if(method=="SAMseq") {
     print("using SAMseq")
+    res=0
   }
 
   as.data.frame(res)

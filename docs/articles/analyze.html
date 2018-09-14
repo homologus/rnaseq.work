@@ -109,8 +109,9 @@
 <a href="#pasilla" class="anchor"></a>1. pasilla</h2>
 <pre><code>source("https://bioconductor.org/biocLite.R")
 biocLite("pasilla")
-datafile = system.file("extdata/pasilla_gene_counts.tsv", package = "pasilla")
-count_table = read.table(datafile, header = TRUE, row.names = 1)</code></pre>
+library("pasilla")
+datafile &lt;- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
+count_table &lt;- read.csv(datafile,sep="\t",row.names="gene_id")</code></pre>
 </div>
 <div id="gse37704" class="section level2">
 <h2 class="hasAnchor">

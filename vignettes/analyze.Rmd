@@ -3,8 +3,9 @@
 ~~~~~~~
 source("https://bioconductor.org/biocLite.R")
 biocLite("pasilla")
-datafile = system.file("extdata/pasilla_gene_counts.tsv", package = "pasilla")
-count_table = read.table(datafile, header = TRUE, row.names = 1)
+library("pasilla")
+datafile <- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
+count_table <- read.csv(datafile,sep="\t",row.names="gene_id")
 ~~~~~~~
 
 

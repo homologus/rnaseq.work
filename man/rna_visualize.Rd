@@ -4,33 +4,35 @@
 \alias{rna_visualize}
 \title{RNAseq Visualize}
 \usage{
-rna_visualize(data, method = "hist", lib = "base")
+rna_visualize(rna_data, method = "hist", lib = "base")
 }
 \description{
 Visualize
 https://www.rdocumentation.org/packages/edgeR/versions/3.14.0/topics/plotSmear
 }
 \examples{
-rna_visualize(data, method="hist", lib="base")
-rna_visualize(data, method="hist", lib="ggplot")
-rna_visualize(data, method="boxplot", lib="base")
-rna_visualize(data, method="boxplot", lib="ggplot")
-rna_visualize(data, method="density", lib="base")
-rna_visualize(data, method="density", lib="ggplot")
-rna_visualize(data, method="cluster-gene", lib="base")
-rna_visualize(data, method="cluster-gene", lib="ggplot")
-rna_visualize(data, method="cluster-expt", lib="base")
-rna_visualize(data, method="cluster-expt", lib="ggplot")
-rna_visualize(data, method="MA", lib="base")
-rna_visualize(data, method="MA", lib="ggplot")
-rna_visualize(data, method="smear", lib="base")
-rna_visualize(data, method="smear", lib="ggplot")
-rna_visualize(data, method="MDS", lib="base")
-rna_visualize(data, method="MDS", lib="ggplot")
-rna_visualize(data, method="PCA", lib="base")
-rna_visualize(data, method="PCA", lib="ggplot")
-rna_visualize(data, method="BCV", lib="base")
-rna_visualize(data, method="BCV", lib="ggplot")
-rna_visualize(data, method="volcano", lib="base")
-rna_visualize(data, method="volcano", lib="ggplot")
+rna_visualize(rna_data, method="hist", lib="base")
+rna_visualize(rna_data, method="hist", lib="ggplot")
+rna_visualize(rna_data, method="boxplot", lib="base")
+rna_visualize(rna_data, method="boxplot", lib="ggplot")
+rna_visualize(rna_data, method="density", lib="base")
+rna_visualize(rna_data, method="density", lib="ggplot")
+rna_visualize(rna_data, method="cluster-gene", lib="base")
+rna_visualize(rna_data, method="cluster-gene", lib="ggplot")
+rna_visualize(rna_data, method="cluster-expt", lib="base")
+rna_visualize(rna_data, method="cluster-expt", lib="ggplot")
+rna_visualize(rna_data, method="MA", lib="base")
+rna_visualize(rna_data, method="MA", lib="ggplot")
+rna_visualize(rna_data, method="smear", lib="base")
+rna_visualize(rna_data, method="smear", lib="ggplot")
+rna_visualize(rna_data, method="MDS", lib="base")
+rna_visualize(rna_data, method="MDS", lib="ggplot")
+rna_visualize(rna_data, method="PCA", lib="base")
+rna_visualize(rna_data, method="PCA", lib="ggplot")
+rna_visualize(rna_data, method="BCV", lib="base")
+rna_visualize(rna_data, method="BCV", lib="ggplot")
+rna_visualize(rna_data, method="dispersion", lib="base")
+rna_visualize(rna_data, method="dispersion", lib="ggplot")
+rna_visualize(rna_data, method="volcano", lib="base")
+rna_visualize(rna_data, method="volcano", lib="ggplot")
 }
