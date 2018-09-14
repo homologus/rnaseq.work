@@ -82,13 +82,13 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
   if(method=="limma-voom") {
     print("using limma-voom")
     library(limma)
-    # v <- voom(count_table, design_table, plot = TRUE)
-    # fit <- lmFit(v)
-    # cont.matrix <- makeContrasts(B.PregVsLac=basal.pregnant - basal.lactate,levels=design)
-    # fit.cont <- contrasts.fit(fit, cont.matrix)
-    # fit.cont <- eBayes(fit.cont)
-    # summa.fit <- decideTests(fit.cont)
-    res=0
+    v <- voom(count_table, design_table, plot = TRUE)
+    fit <- lmFit(v)
+    #cont.matrix <- makeContrasts(B.PregVsLac=basal.pregnant - basal.lactate,levels=design)
+    #fit.cont <- contrasts.fit(fit, cont.matrix)
+    #fit.cont <- eBayes(fit.cont)
+    #summa.fit <- decideTests(fit.cont)
+    #res=summa.fit
   }
 
   if(method=="sleuth") {

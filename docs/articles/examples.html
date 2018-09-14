@@ -113,12 +113,18 @@ count_table &lt;- read.csv(datafile,sep="\t",row.names="gene_id")
 expt &lt;- colnames(count_table)
 condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
 design_table=data.frame(expt,condition)
-results=rna_diff_expr(count_table, design_table, method="DEseq2")</code></pre>
+results=rna_diff_expr(count_table, design_table, method="DESeq2")</code></pre>
 </div>
 <div id="edger-analysis-of-pasilla-dataset" class="section level3">
 <h3 class="hasAnchor">
 <a href="#edger-analysis-of-pasilla-dataset" class="anchor"></a>2. edgeR Analysis of Pasilla Dataset</h3>
-<pre><code></code></pre>
+<pre><code>library("pasilla")
+datafile &lt;- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
+count_table &lt;- read.csv(datafile,sep="\t",row.names="gene_id")
+expt &lt;- colnames(count_table)
+condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
+design_table=data.frame(expt,condition)
+results=rna_diff_expr(count_table, design_table, method="edgeR")</code></pre>
 </div>
   </div>
 
