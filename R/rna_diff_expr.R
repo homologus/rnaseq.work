@@ -32,32 +32,27 @@
 #' rna_diff_expr(count_table, design_table, method="edgeR")
 #' rna_diff_expr(count_table, design_table, method="limma-voom")
 #' rna_diff_expr(count_table, design_table, method="sleuth")
-#' rna_diff_expr(count_table, design_table, method="bayseq")
-#' rna_diff_expr(count_table, design_table, method="NOIseq")
-#' rna_diff_expr(count_table, design_table, method="EBseq")
-#' rna_diff_expr(count_table, design_table, method="SAMseq")
+#' rna_diff_expr(count_table, design_table, method="baySeq")
+#' rna_diff_expr(count_table, design_table, method="NOISeq")
+#' rna_diff_expr(count_table, design_table, method="EBSeq")
 #
 
 rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
   if(method=="DESeq") {
-    print("using DEseq")
-    # cds <- newCountDataSet(cnts, grp.idx)
-    # cds <- estimateSizeFactors(cds)
-    # cds <- estimateDispersions(cds)
-    # deseq.res <- nbinomTest(cds, "knockdown", "control")
-    # deseq.fc=deseq.res$log2FoldChange
-    # names(deseq.fc)=deseq.res$id
-    # sum(is.infinite(deseq.fc))
-    # deseq.fc[deseq.fc>10]=10
-    # deseq.fc[deseq.fc< -10]=-10
-    # exp.fc=deseq.fc
-    # out.suffix="deseq"
-    res=0
+    print("using DESeq")
+    library(DESeq)
+    library(DESeq2)
+    y <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
+    group = colData(y)$condition
+    cds <- newCountDataSet(count_table, group)
+    cds <- estimateSizeFactors(cds)
+    cds <- estimateDispersions(cds)
+    res <- nbinomTest(cds, "untreated", "treated")
   }
 
   if(method=="DESeq2") {
-    print("using DEseq2")
+    print("using DESeq2")
     library(DESeq2)
     dds <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
     dds <- DESeq(dds)
@@ -82,41 +77,75 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
   if(method=="limma-voom") {
     print("using limma-voom")
     library(limma)
-    v <- voom(count_table, design_table, plot = TRUE)
-    fit <- lmFit(v)
-    #cont.matrix <- makeContrasts(B.PregVsLac=basal.pregnant - basal.lactate,levels=design)
-    #fit.cont <- contrasts.fit(fit, cont.matrix)
-    #fit.cont <- eBayes(fit.cont)
-    #summa.fit <- decideTests(fit.cont)
-    #res=summa.fit
+    library(DESeq2)
+    y <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
+    group = colData(y)$condition
+    dgel2 <- DGEList(counts=count_table, group=group)
+    dgel2 <- calcNormFactors(dgel2)
+    design <- model.matrix(~group)
+    v <- voom(dgel2,design)
+    fit <- lmFit(v,design)
+    fit <- eBayes(fit)
+    res=topTable(fit,coef=2,n=Inf,sort="p")
   }
 
   if(method=="sleuth") {
     print("using sleuth")
+
+    # so$filter_bool <- filter_bool
+    # so$filter_df <- filter_df
+    # so$obs_norm_filt <- data.frame()
+    # so$tpm_sf <- vector()
+    # so$bs_quants <- list()
+    # so$bs_summary <- list()
+
+  so <- list(
+      kal = kal_list,
+      kal_versions = kal_versions,
+      obs_raw = obs_raw,
+      sample_to_covariates = sample_to_covariates,
+      bootstrap_summary = NA,
+      full_formula = full_model,
+      design_matrix = design_matrix,
+      target_mapping = target_mapping,
+      gene_mode = gene_mode,
+      gene_column = aggregation_column,
+      norm_fun_counts = norm_fun_counts,
+      norm_fun_tpm = norm_fun_tpm,
+      transform_fun_counts = transform_fun_counts,
+      transform_fun_tpm = transform_fun_tpm,
+      pval_aggregate = pval_aggregate
+    )
+
+
+
+    # so <- sleuth_fit(so, ~condition, 'full')
+    # so <- sleuth_fit(so, ~1, 'reduced')
+    # so <- sleuth_lrt(so, 'reduced', 'full')
+    # sleuth_table <- sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
+    # sleuth_significant <- dplyr::filter(sleuth_table, qval <= 0.05)
+    # res =sleuth_significant
+    res = 0
   }
 
-  if(method=="bayseq") {
-    print("using bayseq")
+  if(method=="baySeq") {
+    print("using baySeq")
     # CD <- new("countData", data = simData, replicates = replicates, groups = groups)
     # CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
     # CD <- getLikelihoods(CD, cl = cl, bootStraps = 3, verbose = FALSE)
     res=0
   }
 
-  if(method=="EBseq") {
-    print("using EBseq")
+  if(method=="EBSeq") {
+    print("using EBSeq")
     res=0
   }
 
-  if(method=="NOIseq") {
-    print("using NOIseq")
-    res=0
-  }
-
-  if(method=="SAMseq") {
-    print("using SAMseq")
+  if(method=="NOISeq") {
+    print("using NOISeq")
     res=0
   }
 
   as.data.frame(res)
 }
+
