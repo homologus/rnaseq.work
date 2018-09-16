@@ -37,6 +37,8 @@
 #' rna_diff_expr(count_table, design_table, method="EBSeq")
 #
 
+library(dplyr)
+
 rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
   if(method=="DESeq") {
@@ -49,6 +51,7 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     cds <- estimateSizeFactors(cds)
     cds <- estimateDispersions(cds)
     res <- nbinomTest(cds, "untreated", "treated")
+    res <- as.data.frame(res) %>% dplyr::mutate(FinalP=padj,logFC=log2FoldChange) %>% dplyr::select(id,logFC,FinalP)
   }
 
   if(method=="DESeq2") {
@@ -57,6 +60,7 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     dds <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
     dds <- DESeq(dds)
     res <- results(dds)
+    res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::mutate(id=rowname, FinalP=padj,logFC=log2FoldChange) %>% dplyr::select(id,logFC,FinalP)
   }
 
   if(method=="edgeR") {
@@ -71,7 +75,9 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     dge = estimateTagwiseDisp(dge)
     et = exactTest(dge)
     ## Extract results from edgeR analysis
-    res = topTags(et)
+    res = et$table
+    res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::mutate(id=rowname, FinalP=PValue) %>% dplyr::select(id,logFC,FinalP)
+    
   }
 
   if(method=="limma-voom") {
@@ -87,6 +93,7 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     fit <- lmFit(v,design)
     fit <- eBayes(fit)
     res=topTable(fit,coef=2,n=Inf,sort="p")
+    res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::mutate(id=rowname, FinalP=adj.P.Val) %>% dplyr::select(id,logFC,FinalP)
   }
 
   if(method=="sleuth") {
@@ -99,26 +106,6 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     # so$bs_quants <- list()
     # so$bs_summary <- list()
 
-  so <- list(
-      kal = kal_list,
-      kal_versions = kal_versions,
-      obs_raw = obs_raw,
-      sample_to_covariates = sample_to_covariates,
-      bootstrap_summary = NA,
-      full_formula = full_model,
-      design_matrix = design_matrix,
-      target_mapping = target_mapping,
-      gene_mode = gene_mode,
-      gene_column = aggregation_column,
-      norm_fun_counts = norm_fun_counts,
-      norm_fun_tpm = norm_fun_tpm,
-      transform_fun_counts = transform_fun_counts,
-      transform_fun_tpm = transform_fun_tpm,
-      pval_aggregate = pval_aggregate
-    )
-
-
-
     # so <- sleuth_fit(so, ~condition, 'full')
     # so <- sleuth_fit(so, ~1, 'reduced')
     # so <- sleuth_lrt(so, 'reduced', 'full')
@@ -130,10 +117,18 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
   if(method=="baySeq") {
     print("using baySeq")
-    # CD <- new("countData", data = simData, replicates = replicates, groups = groups)
-    # CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
-    # CD <- getLikelihoods(CD, cl = cl, bootStraps = 3, verbose = FALSE)
-    res=0
+    library(baySeq)
+    data(simData)
+    simData[1:10,]
+    cl <- NULL
+    replicates <- c("simA", "simA", "simA", "simA", "simA", "simB", "simB", "simB", "simB", "simB")
+    groups <- list(NDE = c(1,1,1,1,1,1,1,1,1,1), DE = c(1,1,1,1,1,2,2,2,2,2))
+    CD <- new("countData", data = simData, replicates = replicates, groups = groups)
+    libsizes(CD) <- getLibsizes(CD)
+    CD@annotation <- data.frame(name = paste("count", 1:1000, sep = "_"))
+    CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
+    CD <- getLikelihoods(CD, cl = cl, bootStraps = 3, verbose = FALSE)
+    res=topCounts(CD, group = "DE")
   }
 
   if(method=="EBSeq") {
@@ -146,6 +141,7 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     res=0
   }
 
-  as.data.frame(res)
+  #as.data.frame(res)
+  res
 }
 

@@ -104,27 +104,44 @@
 
     
     
-<div id="deseq-analysis-of-pasilla-dataset" class="section level3">
+<div id="analysis-of-pasilla-dataset---deseq2-deseq-edger-limma-voom" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deseq-analysis-of-pasilla-dataset" class="anchor"></a>1. DEseq Analysis of Pasilla Dataset</h3>
+<a href="#analysis-of-pasilla-dataset---deseq2-deseq-edger-limma-voom" class="anchor"></a>1. Analysis of Pasilla Dataset - DESeq2, DESeq, edgeR, limma-voom</h3>
 <pre><code>library("pasilla")
 datafile &lt;- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
 count_table &lt;- read.csv(datafile,sep="\t",row.names="gene_id")
 expt &lt;- colnames(count_table)
 condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
 design_table=data.frame(expt,condition)
-results=rna_diff_expr(count_table, design_table, method="DESeq2")</code></pre>
-</div>
-<div id="edger-analysis-of-pasilla-dataset" class="section level3">
-<h3 class="hasAnchor">
-<a href="#edger-analysis-of-pasilla-dataset" class="anchor"></a>2. edgeR Analysis of Pasilla Dataset</h3>
-<pre><code>library("pasilla")
-datafile &lt;- system.file("extdata", "pasilla_gene_counts.tsv", package="pasilla", mustWork=TRUE)
-count_table &lt;- read.csv(datafile,sep="\t",row.names="gene_id")
-expt &lt;- colnames(count_table)
-condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
-design_table=data.frame(expt,condition)
-results=rna_diff_expr(count_table, design_table, method="edgeR")</code></pre>
+#
+############
+# DESeq2
+############
+results_DE2=rna_diff_expr(count_table, design_table, method="DESeq2")
+write.csv(as.data.frame(results_DE2), file="DE2.csv")
+#
+############
+# DESeq
+############
+results_DE=rna_diff_expr(count_table, design_table, method="DESeq")
+write.csv(as.data.frame(results_DE), file="DE.csv")
+#
+############
+# edgeR
+############
+results_edgeR=rna_diff_expr(count_table, design_table, method="edgeR")
+write.csv(as.data.frame(results_edgeR), file="edgeR.csv")
+#
+############
+# limma-voom
+############
+results_limma=rna_diff_expr(count_table, design_table, method="limma-voom")
+write.csv(as.data.frame(results_limma), file="limma.csv")
+#</code></pre>
+<p>as.data.frame(results_DE2) %&gt;% tibble::rownames_to_column() %&gt;% dplyr::filter(pvalue&lt;1e-40)</p>
+<p>as.data.frame(results_DE) %&gt;% dplyr::filter(pval&lt;1e-40)</p>
+<p>as.data.frame(results_edgeR) %&gt;% tibble::rownames_to_column() %&gt;% dplyr::filter(PValue&lt;1e-40)</p>
+<p>as.data.frame(results_limma) %&gt;% tibble::rownames_to_column() %&gt;% head</p>
 </div>
   </div>
 

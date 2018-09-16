@@ -189,10 +189,28 @@ differentially expressed genes.</p>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    plotMA</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:BiocGenerics':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    plotMA</span></div><div class='output co'>#&gt; <span class='error'>Error in ncol(countData) == nrow(colData): object 'count_table' not found</span></div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"limma-voom"</span>)</div><div class='output co'>#&gt; [1] "using limma-voom"</div><div class='output co'>#&gt; <span class='error'>Error in ncol(countData) == nrow(colData): object 'count_table' not found</span></div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"sleuth"</span>)</div><div class='output co'>#&gt; [1] "using sleuth"</div><div class='output co'>#&gt; <span class='error'>Error in rna_diff_expr(count_table, design_table, method = "sleuth"): object 'kal_list' not found</span></div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"baySeq"</span>)</div><div class='output co'>#&gt; [1] "using baySeq"</div><div class='output co'>#&gt;   res
-#&gt; 1   0</div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"NOISeq"</span>)</div><div class='output co'>#&gt; [1] "using NOISeq"</div><div class='output co'>#&gt;   res
-#&gt; 1   0</div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"EBSeq"</span>)</div><div class='output co'>#&gt; [1] "using EBSeq"</div><div class='output co'>#&gt;   res
-#&gt; 1   0</div></pre>
+#&gt; <span class='message'>    plotMA</span></div><div class='output co'>#&gt; <span class='error'>Error in ncol(countData) == nrow(colData): object 'count_table' not found</span></div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"limma-voom"</span>)</div><div class='output co'>#&gt; [1] "using limma-voom"</div><div class='output co'>#&gt; <span class='error'>Error in ncol(countData) == nrow(colData): object 'count_table' not found</span></div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"sleuth"</span>)</div><div class='output co'>#&gt; [1] "using sleuth"</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"baySeq"</span>)</div><div class='output co'>#&gt; [1] "using baySeq"</div><div class='output co'>#&gt; <span class='message'>Loading required package: abind</span></div><div class='output co'>#&gt; <span class='message'>Finding priors...</span></div><div class='output co'>#&gt; <span class='message'>done.</span></div><div class='output co'>#&gt; <span class='message'>Length of priorReps:1000</span></div><div class='output co'>#&gt; <span class='message'>Length of priorSubset:1000</span></div><div class='output co'>#&gt; <span class='message'>Length of subset:1000</span></div><div class='output co'>#&gt; <span class='message'>Length of postRows:1000</span></div><div class='output co'>#&gt; ...</div><div class='output co'>#&gt;    annotation simA.1 simA.2 simA.3 simA.4 simA.5 simB.1 simB.2 simB.3 simB.4
+#&gt; 1    count_80      1      1      0      1      1     13     21      8      6
+#&gt; 2    count_78      1      1      0      1      1      8     13      7      9
+#&gt; 3    count_66      0      0      0      0      0     15     10      4      4
+#&gt; 4    count_21      2      0      1      1      0     15     15      6      5
+#&gt; 5     count_7      9      8      8      8      9      1      2      1      0
+#&gt; 6    count_26     13      4     11      5      7      1      1      1      0
+#&gt; 7    count_64      6      6      8     11      9      1      1      0      0
+#&gt; 8    count_72      0      0      1      0      0      7      6      4      3
+#&gt; 9    count_83     14      6      9      2      9      1      0      0      1
+#&gt; 10   count_27      5      3      6      4      7      0      0      0      1
+#&gt;    simB.5 Likelihood ordering       FDR.DE      FWER.DE
+#&gt; 1      20  0.9995791      2&gt;1 0.0004208781 0.0004208781
+#&gt; 2      10  0.9992829      2&gt;1 0.0005689902 0.0011376785
+#&gt; 3      10  0.9990943      2&gt;1 0.0006812318 0.0020423631
+#&gt; 4      11  0.9985733      2&gt;1 0.0008675879 0.0034661055
+#&gt; 5       0  0.9983926      1&gt;2 0.0010155560 0.0050679624
+#&gt; 6       0  0.9980266      1&gt;2 0.0011752048 0.0070314101
+#&gt; 7       1  0.9962283      1&gt;2 0.0015461322 0.0107765864
+#&gt; 8       8  0.9957691      2&gt;1 0.0018817294 0.0149619013
+#&gt; 9       1  0.9954451      1&gt;2 0.0021787487 0.0194486539
+#&gt; 10      0  0.9941751      1&gt;2 0.0025433681 0.0251603097</div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"NOISeq"</span>)</div><div class='output co'>#&gt; [1] "using NOISeq"</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>rna_diff_expr</span>(<span class='no'>count_table</span>, <span class='no'>design_table</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"EBSeq"</span>)</div><div class='output co'>#&gt; [1] "using EBSeq"</div><div class='output co'>#&gt; [1] 0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
