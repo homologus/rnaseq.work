@@ -37,10 +37,9 @@
 #' rna_diff_expr(count_table, design_table, method="EBSeq")
 #
 
-library(dplyr)
-
 rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
+  library(dplyr)
   if(method=="DESeq") {
     print("using DESeq")
     library(DESeq)
