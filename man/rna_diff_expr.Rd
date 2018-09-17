@@ -11,12 +11,5 @@ This function allows you to identify
 differentially expressed genes.
 }
 \examples{
-rna_diff_expr(count_table, design_table, method="DESeq")
-rna_diff_expr(count_table, design_table, method="DESeq2")
-rna_diff_expr(count_table, design_table, method="edgeR")
-rna_diff_expr(count_table, design_table, method="limma-voom")
-rna_diff_expr(count_table, design_table, method="sleuth")
-rna_diff_expr(count_table, design_table, method="baySeq")
-rna_diff_expr(count_table, design_table, method="NOISeq")
-rna_diff_expr(count_table, design_table, method="EBSeq")
+
 }

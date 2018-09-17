@@ -20,36 +20,26 @@
 ###############################################################################
 
 
-
 #' RNAseq Differential Expressison
 #'
 #' This function allows you to identify
 #' differentially expressed genes.
 #' @export
 #' @examples
-#' rna_diff_expr(count_table, design_table, method="DESeq")
-#' rna_diff_expr(count_table, design_table, method="DESeq2")
-#' rna_diff_expr(count_table, design_table, method="edgeR")
-#' rna_diff_expr(count_table, design_table, method="limma-voom")
-#' rna_diff_expr(count_table, design_table, method="sleuth")
-#' rna_diff_expr(count_table, design_table, method="baySeq")
-#' rna_diff_expr(count_table, design_table, method="NOISeq")
-#' rna_diff_expr(count_table, design_table, method="EBSeq")
-#
+#'
 
 rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
   library(dplyr)
+
   if(method=="DESeq") {
     print("using DESeq")
     library(DESeq)
-    library(DESeq2)
-    y <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
-    group = colData(y)$condition
+    group=design_table$condition
     cds <- newCountDataSet(count_table, group)
     cds <- estimateSizeFactors(cds)
     cds <- estimateDispersions(cds)
-    res <- nbinomTest(cds, "untreated", "treated")
+    res <- nbinomTest(cds, "treated", "untreated")
     res <- as.data.frame(res) %>% dplyr::mutate(FinalP=padj,logFC=log2FoldChange) %>% dplyr::select(id,logFC,FinalP)
   }
 
@@ -64,35 +54,30 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
   if(method=="edgeR") {
     print("using edgeR")
-    library(DESeq2)
     library(edgeR)
-    y <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
-    group = colData(y)$condition
-    y = counts(y)
-    dge = DGEList(counts = y, group = group)
+    group=design_table$condition
+    dge = DGEList(counts = count_table, group = group)
     dge = estimateCommonDisp(dge)
     dge = estimateTagwiseDisp(dge)
     et = exactTest(dge)
     ## Extract results from edgeR analysis
     res = et$table
     res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::mutate(id=rowname, FinalP=PValue) %>% dplyr::select(id,logFC,FinalP)
-    
   }
 
   if(method=="limma-voom") {
     print("using limma-voom")
     library(limma)
-    library(DESeq2)
-    y <- DESeqDataSetFromMatrix(count_table, design_table, ~condition)
-    group = colData(y)$condition
+    library(edgeR)
+    group=design_table$condition
     dgel2 <- DGEList(counts=count_table, group=group)
     dgel2 <- calcNormFactors(dgel2)
     design <- model.matrix(~group)
     v <- voom(dgel2,design)
     fit <- lmFit(v,design)
     fit <- eBayes(fit)
-    res=topTable(fit,coef=2,n=Inf,sort="p")
-    res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::mutate(id=rowname, FinalP=adj.P.Val) %>% dplyr::select(id,logFC,FinalP)
+    res=topTable(fit,coef=2,n=Inf)
+    res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::arrange(rowname) %>% dplyr::mutate(id=rowname, FinalP=adj.P.Val) %>% dplyr::select(id,logFC,FinalP)
   }
 
   if(method=="sleuth") {
