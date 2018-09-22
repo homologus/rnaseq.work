@@ -4,7 +4,7 @@
 \alias{rna_visualize}
 \title{RNAseq Visualize}
 \usage{
-rna_visualize(rna_data, method = "hist", lib = "base")
+rna_visualize(rna_data, method = "hist", lib = "ggplot")
 }
 \description{
 Visualize

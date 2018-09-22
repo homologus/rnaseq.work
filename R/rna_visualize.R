@@ -52,8 +52,14 @@
 #' rna_visualize(rna_data, method="volcano", lib="ggplot")
 
 
-rna_visualize <- function(rna_data, method="hist", lib="base"){
+rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
 
+  library(ggplot2)
+
+
+  #######################
+  # histogram
+  #######################
   if(method=="hist") {
     if(lib=="ggplot") {
       print("using hist/ggplot")
@@ -65,6 +71,10 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # boxplot
+  #######################
   if(method=="boxplot") {
     if(lib=="ggplot") {
       print("using boxplot/ggplot")
@@ -73,6 +83,10 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # density-plot
+  #######################
   if(method=="density") {
     if(lib=="ggplot") {
       print("using density/ggplot")
@@ -81,6 +95,10 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # cluster-expt
+  #######################
   if(method=="cluster-expt") {
     if(lib=="ggplot") {
       print("using cluster-expt/ggplot")
@@ -89,6 +107,10 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # cluster-gene
+  #######################
   if(method=="cluster-gene") {
     if(lib=="ggplot") {
       print("using cluster-gene/ggplot")
@@ -97,6 +119,10 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # smear
+  #######################
   if(method=="smear") {
     if(lib=="ggplot") {
       print("using smear/ggplot")
@@ -107,6 +133,9 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
   }
 
 
+  #######################
+  # MA
+  #######################
   if(method=="MA") {
     if(lib=="ggplot") {
       print("using MA/ggplot")
@@ -121,9 +150,20 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # MDS
+  #######################
   if(method=="MDS") {
+    library(PoiClaClu)
     if(lib=="ggplot") {
       print("using MDS/ggplot")
+      poisd <- PoissonDistance(t(counts(dds)))
+      samplePDM <- as.matrix( poisd$dd )
+      rownames(samplePDM) <- paste( dds$dex, dds$cell, sep=" - " )
+      colnames(samplePDM) <- NULL
+      mds <- as.data.frame(colData(dds)) %>% cbind(cmdscale(samplePDM))
+      ggplot(mds, aes(x = `1`, y = `2`, color = dex, shape = cell)) + geom_point(size = 3) + coord_fixed()
     } else {
       print("using MDS/base")
       library("edgeR")
@@ -131,16 +171,28 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # PCA
+  #######################
   if(method=="PCA") {
+    library(DESeq2)
     if(lib=="ggplot") {
       print("using PCA/ggplot")
+      dds <- DESeqDataSet(se, design = ~ cell + dex)
+      vsd <- vst(dds, blind = FALSE)
+      pca <- DESeq2::plotPCA(vsd, intgroup = c( "dex", "cell"), returnData = TRUE)
+      ggplot(pca, aes(x = PC1, y = PC2, color = dex, shape = cell)) + geom_point(size =3) + coord_fixed()
     } else {
       print("using PCA/base")
-      library("DESeq2")
       plotPCA(rna_data)
     }
   }
 
+
+  #######################
+  # BCV
+  #######################
   if(method=="BCV") {
     if(lib=="ggplot") {
       print("using BCV/ggplot")
@@ -150,6 +202,10 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # dispersion
+  #######################
   if(method=="dispersion") {
     if(lib=="ggplot") {
       print("using dispersion/ggplot")
@@ -159,6 +215,10 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
     }
   }
 
+
+  #######################
+  # volcano
+  #######################
   if(method=="volcano") {
     if(lib=="ggplot") {
       print("using volcano/ggplot")
@@ -170,4 +230,5 @@ rna_visualize <- function(rna_data, method="hist", lib="base"){
   }
 
 }
+
 

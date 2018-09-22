@@ -32,6 +32,9 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
 
   library(dplyr)
 
+  ############################
+  # DESeq implementation
+  ############################
   if(method=="DESeq") {
     print("using DESeq")
     library(DESeq)
@@ -39,10 +42,14 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     cds <- newCountDataSet(count_table, group)
     cds <- estimateSizeFactors(cds)
     cds <- estimateDispersions(cds)
-    res <- nbinomTest(cds, "treated", "untreated")
+    levels <- unique(group)
+    res <- nbinomTest(cds, levels[1], levels[2])
     res <- as.data.frame(res) %>% dplyr::mutate(FinalP=padj,logFC=log2FoldChange) %>% dplyr::select(id,logFC,FinalP)
   }
 
+  ############################
+  # DESeq2 implementation
+  ############################
   if(method=="DESeq2") {
     print("using DESeq2")
     library(DESeq2)
@@ -52,6 +59,9 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::mutate(id=rowname, FinalP=padj,logFC=log2FoldChange) %>% dplyr::select(id,logFC,FinalP)
   }
 
+  ############################
+  # edgeR implementation
+  ############################
   if(method=="edgeR") {
     print("using edgeR")
     library(edgeR)
@@ -65,6 +75,9 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::mutate(id=rowname, FinalP=PValue) %>% dplyr::select(id,logFC,FinalP)
   }
 
+  ############################
+  # limma-voom implementation
+  ############################
   if(method=="limma-voom") {
     print("using limma-voom")
     library(limma)
@@ -80,6 +93,9 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     res <- as.data.frame(res) %>% tibble::rownames_to_column() %>% dplyr::arrange(rowname) %>% dplyr::mutate(id=rowname, FinalP=adj.P.Val) %>% dplyr::select(id,logFC,FinalP)
   }
 
+  ############################
+  # sleuth (not implemented)
+  ############################
   if(method=="sleuth") {
     print("using sleuth")
 
@@ -99,12 +115,16 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
     res = 0
   }
 
+  ############################
+  # baySeq (not implemented)
+  ############################
   if(method=="baySeq") {
     print("using baySeq")
     library(baySeq)
     data(simData)
     simData[1:10,]
     cl <- NULL
+    # condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
     replicates <- c("simA", "simA", "simA", "simA", "simA", "simB", "simB", "simB", "simB", "simB")
     groups <- list(NDE = c(1,1,1,1,1,1,1,1,1,1), DE = c(1,1,1,1,1,2,2,2,2,2))
     CD <- new("countData", data = simData, replicates = replicates, groups = groups)
