@@ -114,8 +114,16 @@ rna_diff_expr(count_table, design_table, method="EBSeq")</code></pre>
 <h2 class="hasAnchor">
 <a href="#function-rna_visualize" class="anchor"></a>Function rna_visualize</h2>
 <p>The function rna_visualize() plots RNAseq-related data in various ways (e.g. histogram, boxplot, density plot, clustering, MA plot, smear plot, MDS plot, PCA plot, BCV plot, volcano plot) in both base and ggplot libraries. You just have to change the ‘method’ parameter to appropriate plot type.</p>
-<pre><code>rna_visualize(rna_data, method="hist", lib="base")
-rna_visualize(rna_data, method="hist", lib="ggplot")</code></pre>
+<pre><code>rna_visualize(count_table, method="Hist", col="")
+rna_visualize(count_table, method="MA", col=c("treated", "untreated"))
+rna_visualize(count_table, method="PCA")
+rna_visualize(count_table, method="MDS")
+rna_visualize(count_table, method="BCV")
+rna_visualize(count_table, method="DispEsts")
+rna_visualize(count_table, method="Counts", gene="")
+rna_visualize(count_table, method="Sparsity")
+rna_visualize(count_table, method="Hist", lib="base")
+rna_visualize(count_table, method="Hist", lib="ggplot")</code></pre>
 </div>
 </div>
   </div>

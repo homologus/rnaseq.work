@@ -26,96 +26,37 @@
 #' https://www.rdocumentation.org/packages/edgeR/versions/3.14.0/topics/plotSmear
 #' @export
 #' @examples
-#' rna_visualize(rna_data, method="hist", lib="base")
-#' rna_visualize(rna_data, method="hist", lib="ggplot")
-#' rna_visualize(rna_data, method="boxplot", lib="base")
-#' rna_visualize(rna_data, method="boxplot", lib="ggplot")
-#' rna_visualize(rna_data, method="density", lib="base")
-#' rna_visualize(rna_data, method="density", lib="ggplot")
-#' rna_visualize(rna_data, method="cluster-gene", lib="base")
-#' rna_visualize(rna_data, method="cluster-gene", lib="ggplot")
-#' rna_visualize(rna_data, method="cluster-expt", lib="base")
-#' rna_visualize(rna_data, method="cluster-expt", lib="ggplot")
-#' rna_visualize(rna_data, method="MA", lib="base")
-#' rna_visualize(rna_data, method="MA", lib="ggplot")
-#' rna_visualize(rna_data, method="smear", lib="base")
-#' rna_visualize(rna_data, method="smear", lib="ggplot")
-#' rna_visualize(rna_data, method="MDS", lib="base")
-#' rna_visualize(rna_data, method="MDS", lib="ggplot")
-#' rna_visualize(rna_data, method="PCA", lib="base")
-#' rna_visualize(rna_data, method="PCA", lib="ggplot")
-#' rna_visualize(rna_data, method="BCV", lib="base")
-#' rna_visualize(rna_data, method="BCV", lib="ggplot")
-#' rna_visualize(rna_data, method="dispersion", lib="base")
-#' rna_visualize(rna_data, method="dispersion", lib="ggplot")
-#' rna_visualize(rna_data, method="volcano", lib="base")
-#' rna_visualize(rna_data, method="volcano", lib="ggplot")
+#' rna_visualize(data_table, method="hist")
+#' rna_visualize(data_table, method="boxplot")
+#' rna_visualize(data_table, method="density")
+#' rna_visualize(data_table, method="MA")
+#' rna_visualize(data_table, method="smear")
+#' rna_visualize(data_table, method="MDS")
+#' rna_visualize(data_table, method="PCA")
+#' rna_visualize(data_table, method="BCV")
+#' rna_visualize(data_table, method="dispersion")
+#' rna_visualize(data_table, method="volcano")
+#'
+#' rna_visualize(data_table, method="hist", lib="base")
+#' rna_visualize(data_table, method="hist", lib="ggplot")
 
 
-rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
+rna_visualize <- function(data_table, method="hist", lib="base", col){
 
   library(ggplot2)
-
 
   #######################
   # histogram
   #######################
+
   if(method=="hist") {
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using hist/ggplot")
-      # Fix 'untreated1'
-      print(ggplot(rna_data)+aes(x=untreated1)+geom_histogram())
+      pseudocount=log2(data_table+1)
+      print(ggplot(pseudocount)+aes_string(x=col)+geom_histogram())
     } else {
       print("using hist/base")
-      hist(rna_data$untreated1)
-    }
-  }
-
-
-  #######################
-  # boxplot
-  #######################
-  if(method=="boxplot") {
-    if(lib=="ggplot") {
-      print("using boxplot/ggplot")
-    } else {
-      print("using boxplot/base")
-    }
-  }
-
-
-  #######################
-  # density-plot
-  #######################
-  if(method=="density") {
-    if(lib=="ggplot") {
-      print("using density/ggplot")
-    } else {
-      print("using density/base")
-    }
-  }
-
-
-  #######################
-  # cluster-expt
-  #######################
-  if(method=="cluster-expt") {
-    if(lib=="ggplot") {
-      print("using cluster-expt/ggplot")
-    } else {
-      print("using cluster-expt/base")
-    }
-  }
-
-
-  #######################
-  # cluster-gene
-  #######################
-  if(method=="cluster-gene") {
-    if(lib=="ggplot") {
-      print("using cluster-gene/ggplot")
-    } else {
-      print("using cluster-gene/base")
+      hist(log2(data_table[,col]+1))
     }
   }
 
@@ -124,11 +65,15 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
   # smear
   #######################
   if(method=="smear") {
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using smear/ggplot")
     } else {
       print("using smear/base")
-      plotSmear(rna_data)
+      y <- matrix(rnbinom(10000,mu=5,size=2),ncol=4)
+      d <- DGEList(counts=y, group=rep(1:2,each=2), lib.size=colSums(y))
+      rownames(d$counts) <- paste("gene",1:nrow(d$counts),sep=".")
+      d <- estimateCommonDisp(d)
+      plotSmear(data_table)
     }
   }
 
@@ -137,16 +82,18 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
   # MA
   #######################
   if(method=="MA") {
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using MA/ggplot")
-      x=rna_data[,1]
-      y=rna_data[,2]
-      M = x - y
+      x=log2(data_table[,col[1]] + 1)
+      y=log2(data_table[,col[2]] + 1)
+      M = y - x
       A = (x + y)/2
-      df = rna_data.frame(A, M)
-      ggplot(df, aes(x = A, y = M)) + geom_point()
+      df = data.frame(A, M)
+      print(ggplot(df, aes(x = A, y = M)) + geom_point())
     } else {
       print("using MA/base")
+      library("limma")
+       maPlot(data_table[,col[1]], data_table[,col[2]])
     }
   }
 
@@ -156,18 +103,18 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
   #######################
   if(method=="MDS") {
     library(PoiClaClu)
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using MDS/ggplot")
       poisd <- PoissonDistance(t(counts(dds)))
       samplePDM <- as.matrix( poisd$dd )
       rownames(samplePDM) <- paste( dds$dex, dds$cell, sep=" - " )
       colnames(samplePDM) <- NULL
       mds <- as.data.frame(colData(dds)) %>% cbind(cmdscale(samplePDM))
-      ggplot(mds, aes(x = `1`, y = `2`, color = dex, shape = cell)) + geom_point(size = 3) + coord_fixed()
+      print(ggplot(mds, aes(x = `1`, y = `2`)) + geom_point(size = 3) + coord_fixed())
     } else {
       print("using MDS/base")
       library("edgeR")
-      plotMDS(rna_data)
+      plotMDS(data_table)
     }
   }
 
@@ -177,7 +124,7 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
   #######################
   if(method=="PCA") {
     library(DESeq2)
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using PCA/ggplot")
       dds <- DESeqDataSet(se, design = ~ cell + dex)
       vsd <- vst(dds, blind = FALSE)
@@ -185,7 +132,7 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
       ggplot(pca, aes(x = PC1, y = PC2, color = dex, shape = cell)) + geom_point(size =3) + coord_fixed()
     } else {
       print("using PCA/base")
-      plotPCA(rna_data)
+      plotPCA(data_table)
     }
   }
 
@@ -194,11 +141,16 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
   # BCV
   #######################
   if(method=="BCV") {
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using BCV/ggplot")
     } else {
+      library("edgeR")
       print("using BCV/base")
-      plotBCV(rna_data)
+      y <- DGEList(data_table)
+      y <- estimateCommonDisp(y)
+      y <- estimateTrendedDisp(y)
+      y <- estimateTagwiseDisp(y)
+      plotBCV(y)
     }
   }
 
@@ -207,11 +159,15 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
   # dispersion
   #######################
   if(method=="dispersion") {
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using dispersion/ggplot")
     } else {
       print("using dispersion/base")
-      plotDispEsts(rna_data)
+      dds <- makeExampleDESeqDataSet()
+      dds <- estimateSizeFactors(dds)
+      dds <- estimateDispersions(dds)
+      plotDispEsts(dds)
+      plotDispEsts(data_table)
     }
   }
 
@@ -220,15 +176,14 @@ rna_visualize <- function(rna_data, method="hist", lib="ggplot"){
   # volcano
   #######################
   if(method=="volcano") {
-    if(lib=="ggplot") {
+    if(lib=="ggplot" || lib=="ggplot2") {
       print("using volcano/ggplot")
-      print(ggplot(rna_data)+aes(x=log2FoldChange,y=-log10(pvalue))+geom_point())
+      print(ggplot(data_table)+aes(x=log2FoldChange,y=-log10(pvalue))+geom_point())
     } else {
       print("using volcano/base")
-      plot(rna_data$log2FoldChange, -log10(data$pvalue), main="Volcano Plot")
+      plot(data_table$log2FoldChange, -log10(data$pvalue), main="Volcano Plot")
     }
   }
 
 }
-
 
