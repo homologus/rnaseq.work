@@ -41,8 +41,9 @@ rna_visualize(data_table, method="BCV")
 rna_visualize(data_table, method="smear")
 rna_visualize(data_table, method="dispersions")
 rna_visualize(data_table, method="sparsity")
-rna_visualize(data_table, method="hist", lib="base", options="treated1")
-rna_visualize(data_table, method="hist", lib="ggplot", options="untreated1")
+rna_visualize(data_table, method="volcano")
+rna_visualize(data_table, method="hist", lib="base", col="treated1")
+rna_visualize(data_table, method="hist", lib="ggplot", col="untreated1")
 ~~~~~~~~~~
 
 

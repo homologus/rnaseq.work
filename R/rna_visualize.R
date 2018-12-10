@@ -27,23 +27,23 @@
 #' @export
 #' @examples
 #' rna_visualize(data_table, method="hist")
-#' rna_visualize(data_table, method="boxplot")
-#' rna_visualize(data_table, method="density")
+#' rna_visualize(data_table, method="counts")
 #' rna_visualize(data_table, method="MA")
 #' rna_visualize(data_table, method="smear")
 #' rna_visualize(data_table, method="MDS")
 #' rna_visualize(data_table, method="PCA")
 #' rna_visualize(data_table, method="BCV")
-#' rna_visualize(data_table, method="dispersion")
+#' rna_visualize(data_table, method="dispersions")
+#' rna_visualize(data_table, method="sparsity")
 #' rna_visualize(data_table, method="volcano")
 #'
 #' rna_visualize(data_table, method="hist", lib="base")
 #' rna_visualize(data_table, method="hist", lib="ggplot")
 
 
-rna_visualize <- function(data_table, method="hist", lib="base", col){
+rna_visualize <- function(data_table, method="hist", lib="base", col, gene){
 
-  library(ggplot2)
+  library("ggplot2")
 
   #######################
   # histogram
@@ -60,6 +60,24 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
     }
   }
 
+  #######################
+  # counts
+  #######################
+
+  if(method=="counts") {
+    library("DESeq2")
+    if(lib=="ggplot" || lib=="ggplot2") {
+      print("using hist/ggplot")
+      pseudocount=log2(data_table+1)
+      print(ggplot(pseudocount)+aes_string(x=col)+geom_histogram())
+    } else {
+      print("using hist/base")
+      # dds = DESeqDataSetFromMatrix(countData=data_table)
+      dds=makeExampleDESeqDataSet()
+      plotCounts(dds,"gene1")
+    }
+  }
+
 
   #######################
   # smear
@@ -69,11 +87,13 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
       print("using smear/ggplot")
     } else {
       print("using smear/base")
-      y <- matrix(rnbinom(10000,mu=5,size=2),ncol=4)
-      d <- DGEList(counts=y, group=rep(1:2,each=2), lib.size=colSums(y))
-      rownames(d$counts) <- paste("gene",1:nrow(d$counts),sep=".")
-      d <- estimateCommonDisp(d)
-      plotSmear(data_table)
+      library("edgeR")
+      #y <- matrix(rnbinom(10000,mu=5,size=2),ncol=4)
+      #d <- DGEList(counts=y, group=rep(1:2,each=2), lib.size=colSums(y))
+      #rownames(d$counts) <- paste("gene",1:nrow(d$counts),sep=".")
+      #d <- DGEList(counts=data_table)
+      #d <- estimateCommonDisp(d)
+      #plotSmear(d)
     }
   }
 
@@ -93,7 +113,7 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
     } else {
       print("using MA/base")
       library("limma")
-       maPlot(data_table[,col[1]], data_table[,col[2]])
+      maPlot(data_table[,col[1]], data_table[,col[2]])
     }
   }
 
@@ -102,7 +122,7 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
   # MDS
   #######################
   if(method=="MDS") {
-    library(PoiClaClu)
+    library("PoiClaClu")
     if(lib=="ggplot" || lib=="ggplot2") {
       print("using MDS/ggplot")
       poisd <- PoissonDistance(t(counts(dds)))
@@ -123,7 +143,7 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
   # PCA
   #######################
   if(method=="PCA") {
-    library(DESeq2)
+    library("DESeq2")
     if(lib=="ggplot" || lib=="ggplot2") {
       print("using PCA/ggplot")
       dds <- DESeqDataSet(se, design = ~ cell + dex)
@@ -146,11 +166,11 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
     } else {
       library("edgeR")
       print("using BCV/base")
-      y <- DGEList(data_table)
-      y <- estimateCommonDisp(y)
-      y <- estimateTrendedDisp(y)
-      y <- estimateTagwiseDisp(y)
-      plotBCV(y)
+      d <- DGEList(data_table)
+      d <- estimateCommonDisp(y)
+      d <- estimateTrendedDisp(y)
+      d <- estimateTagwiseDisp(d)
+      plotBCV(d)
     }
   }
 
@@ -163,11 +183,11 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
       print("using dispersion/ggplot")
     } else {
       print("using dispersion/base")
+      # dds = DESeqDataSetFromMatrix(countData=data_table)
       dds <- makeExampleDESeqDataSet()
       dds <- estimateSizeFactors(dds)
       dds <- estimateDispersions(dds)
       plotDispEsts(dds)
-      plotDispEsts(data_table)
     }
   }
 
@@ -186,4 +206,5 @@ rna_visualize <- function(data_table, method="hist", lib="base", col){
   }
 
 }
+
 

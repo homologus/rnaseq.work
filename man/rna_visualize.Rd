@@ -4,7 +4,7 @@
 \alias{rna_visualize}
 \title{RNAseq Visualize}
 \usage{
-rna_visualize(data_table, method = "hist", lib = "base", options)
+rna_visualize(data_table, method = "hist", lib = "base", col, gene)
 }
 \description{
 Visualize
@@ -12,8 +12,7 @@ https://www.rdocumentation.org/packages/edgeR/versions/3.14.0/topics/plotSmear
 }
 \examples{
 rna_visualize(data_table, method="hist")
-rna_visualize(data_table, method="boxplot")
-rna_visualize(data_table, method="density")
+rna_visualize(data_table, method="count")
 rna_visualize(data_table, method="MA")
 rna_visualize(data_table, method="smear")
 rna_visualize(data_table, method="MDS")
