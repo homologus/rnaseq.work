@@ -32,18 +32,18 @@ in both base and ggplot libraries. You just have to change
 the 'method' parameter to appropriate plot type.
 
 ~~~~~~~~~~
-rna_visualize(data_table, method="hist", col="treated1")
-rna_visualize(data_table, method="MA", col=c("treated1", "untreated1"))
-rna_visualize(data_table, method="counts", gene="gene1")
-rna_visualize(data_table, method="PCA")
-rna_visualize(data_table, method="MDS")
-rna_visualize(data_table, method="BCV")
-rna_visualize(data_table, method="smear")
-rna_visualize(data_table, method="dispersions")
-rna_visualize(data_table, method="sparsity")
+rna_visualize(count_table, method="hist", col="treated1")
+rna_visualize(count_table, method="MA", col=c("treated1", "untreated1"))
+rna_visualize(count_table, method="counts", gene="gene1")
+rna_visualize(count_table, design_table=design_table, method="PCA")
+rna_visualize(count_table, design_table=design_table, method="MDS")
+rna_visualize(count_table, design_table=design_table, method="BCV")
+rna_visualize(count_table, design_table=design_table, method="smear")
+rna_visualize(count_table, design_table=design_table, method="dispersions")
+rna_visualize(count_table, design_table=design_table, method="sparsity")
 rna_visualize(data_table, method="volcano")
-rna_visualize(data_table, method="hist", lib="base", col="treated1")
-rna_visualize(data_table, method="hist", lib="ggplot", col="untreated1")
+rna_visualize(count_table, method="hist", lib="base", col="treated1")
+rna_visualize(count_table, method="hist", lib="ggplot", col="untreated1")
 ~~~~~~~~~~
 
 
