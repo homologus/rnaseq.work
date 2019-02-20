@@ -120,26 +120,33 @@ rna_diff_expr <- function(count_table, design_table, method="DESeq2") {
   ############################
   if(method=="baySeq") {
     print("using baySeq")
-    library(baySeq)
-    data(simData)
-    simData[1:10,]
-    cl <- NULL
+    #library(baySeq)
+    #data(simData)
+    #simData[1:10,]
+    #cl <- NULL
     # condition=c("untreated","untreated","untreated","untreated","treated","treated","treated")
-    replicates <- c("simA", "simA", "simA", "simA", "simA", "simB", "simB", "simB", "simB", "simB")
-    groups <- list(NDE = c(1,1,1,1,1,1,1,1,1,1), DE = c(1,1,1,1,1,2,2,2,2,2))
-    CD <- new("countData", data = simData, replicates = replicates, groups = groups)
-    libsizes(CD) <- getLibsizes(CD)
-    CD@annotation <- data.frame(name = paste("count", 1:1000, sep = "_"))
-    CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
-    CD <- getLikelihoods(CD, cl = cl, bootStraps = 3, verbose = FALSE)
-    res=topCounts(CD, group = "DE")
+    #replicates <- c("simA", "simA", "simA", "simA", "simA", "simB", "simB", "simB", "simB", "simB")
+    #groups <- list(NDE = c(1,1,1,1,1,1,1,1,1,1), DE = c(1,1,1,1,1,2,2,2,2,2))
+    #CD <- new("countData", data = simData, replicates = replicates, groups = groups)
+    #libsizes(CD) <- getLibsizes(CD)
+    #CD@annotation <- data.frame(name = paste("count", 1:1000, sep = "_"))
+    #CD <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
+    #CD <- getLikelihoods(CD, cl = cl, bootStraps = 3, verbose = FALSE)
+    #res=topCounts(CD, group = "DE")
+    res=0
   }
 
+  ############################
+  # EBSeq (not implemented)
+  ############################
   if(method=="EBSeq") {
     print("using EBSeq")
     res=0
   }
 
+  ############################
+  # NOISeq (not implemented)
+  ############################
   if(method=="NOISeq") {
     print("using NOISeq")
     res=0
